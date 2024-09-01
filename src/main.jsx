@@ -6,7 +6,7 @@ import Login from "./components/LogIn";
 import ShowPost from "./components/ShowPost";
 import SignUp from "./components/SignUp";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Homepage from "./components/HomePage.jsx";
+import Homepage from "./components/Homepage"
 import appStore from "./store/store.js";
 import { Provider } from "react-redux";
 
