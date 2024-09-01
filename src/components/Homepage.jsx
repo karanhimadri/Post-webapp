@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import authService from "../AuthService/auth";
 import { login } from "../store/AuthSlice";
 

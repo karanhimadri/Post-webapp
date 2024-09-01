@@ -2,16 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import authService from "../AuthService/auth";
 import { logout } from "../store/AuthSlice";
+import { useState } from "react";
 
 function Navbar() {
   const { status, userName } = useSelector((store) => store.authStore);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   async function handleLogout() {
-    const response = await authService.logout();
-    console.log(response);
+    setLoading(true);
+    await authService.logout();
     dispatch(logout());
+    setLoading(false);
     navigate("/");
   }
   return (
@@ -38,7 +41,7 @@ function Navbar() {
                   : "link-offset-2 link-underline link-underline-opacity-0"
               }
             >
-              Home
+              <b>Home</b>
             </NavLink>
           </li>
           <li>
@@ -50,7 +53,7 @@ function Navbar() {
                   : "link-offset-2 link-underline link-underline-opacity-0"
               }
             >
-              Create Post
+              <b>Create Post</b>
             </NavLink>
           </li>
           <li>
@@ -62,7 +65,7 @@ function Navbar() {
                   : "link-offset-2 link-underline link-underline-opacity-0"
               }
             >
-              Your Posts
+              <b>Your Posts</b>
             </NavLink>
           </li>
         </ul>
@@ -72,14 +75,15 @@ function Navbar() {
             <>
               <div style={{ display: "flex", gap: "10px" }}>
                 <p>
-                  <b>Wealcome, {userName}</b>
+                  <b>Welcome, {userName}</b>
                 </p>
                 <button
                   type="button"
                   className="btn btn-danger"
                   onClick={handleLogout}
+                  disabled={loading}
                 >
-                  Logout
+                  {loading ? "Loading..." : "Logout"}
                 </button>
               </div>
             </>

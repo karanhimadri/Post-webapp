@@ -2,30 +2,33 @@ import React, { useState } from "react";
 import "../App.css";
 import authService from "../AuthService/auth";
 import { useNavigate } from "react-router-dom";
+import { RxCrossCircled } from "react-icons/rx";
 
 const SignUp = () => {
-
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted: ", formData);
-    const res = authService.createAccount(
-      formData.email,
-      formData.password,
-      formData.username
-    );
-    console.log(res);
-    navigate('/login')
+    try {
+      await authService.createAccount(
+        formData.email,
+        formData.password,
+        formData.username
+      );
+      navigate("/login");
+    } catch (error) {
+      setError(" Failed to create account. Please try again.");
+    }
   };
 
   return (
@@ -41,6 +44,7 @@ const SignUp = () => {
             value={formData.username}
             onChange={handleChange}
             required
+            aria-label="Username"
           />
         </div>
         <div className="form-group">
@@ -52,6 +56,7 @@ const SignUp = () => {
             value={formData.email}
             onChange={handleChange}
             required
+            aria-label="Email"
           />
         </div>
         <div className="form-group">
@@ -63,11 +68,20 @@ const SignUp = () => {
             value={formData.password}
             onChange={handleChange}
             required
+            aria-label="Password"
           />
         </div>
-        <button type="submit" className="signup-button">
+        <button type="submit" className="signup-button" aria-label="Sign Up">
           Sign Up
         </button>
+        {error && (
+          <p style={{ marginTop: "10px", marginLeft: "10px" }}>
+            <b style={{ color: "red" }}>
+              <RxCrossCircled />
+              {error}
+            </b>
+          </p>
+        )}
       </form>
     </div>
   );

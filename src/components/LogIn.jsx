@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import "../App.css";
 import authService from "../AuthService/auth";
 import { login } from "../store/AuthSlice";
 import { useNavigate } from "react-router-dom";
+import { RxCrossCircled } from "react-icons/rx";
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,13 +23,22 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted: ", formData);
-    const response = await authService.login(formData.email, formData.password);
-    console.log(response);
-    const user = await authService.getCurrentUser();
-    dispatch(login({ userData: user.$id, userName: user.name  }));
-    console.log(user);
-    navigate("/");
+    setLoading(true);
+    setError("");
+    try {
+      const res = await authService.login(formData.email, formData.password);
+      setError(`${res}`);
+      const user = await authService.getCurrentUser();
+      if (user) {
+        dispatch(login({ userData: user.$id, userName: user.name }));
+        navigate("/");
+      }
+      setLoading(false);
+    } catch (error) {
+      setError("Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,8 +68,16 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="login-button">
-          Login
+          {loading ? "Loading..." : "Login"}
         </button>
+        {error && (
+          <p style={{ marginTop: "10px", marginLeft: "10px" }}>
+            <b style={{ color: "red" }}>
+              <RxCrossCircled />
+              {error.split("AppwriteException:")}
+            </b>
+          </p>
+        )}
       </form>
     </div>
   );

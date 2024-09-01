@@ -3,26 +3,25 @@ import dbService from "../AuthService/DB"; // Import your DBService class
 import "../App.css"; // Import the CSS file
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "./Loading";
-import { startLoading, endLoading } from "../store/LoadingSlice";
 
 const ShowPost = () => {
   const [posts, setPosts] = useState([]);
   const { status, userData } = useSelector((store) => store.authStore);
-  const { loadingState } = useSelector((store) => store.loadingStore);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (status) {
       const fetchPosts = async () => {
         try {
-          dispatch(startLoading());
+          setLoading(true);
           const response = await dbService.getPosts(userData);
           setPosts(response.documents); // `documents` contains the list of posts
-          dispatch(endLoading());
+          setLoading(false);
         } catch (error) {
           console.error("Error fetching posts:", error);
         } finally {
-          dispatch(endLoading());
+          setLoading(false);
         }
       };
 
@@ -33,7 +32,7 @@ const ShowPost = () => {
   return (
     <>
       {status ? (
-        loadingState ? (
+        loading ? (
           <Loading />
         ) : (
           <div className="user-posts">

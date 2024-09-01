@@ -30,7 +30,8 @@ class AuthService {
     try {
       return await this.account.createEmailPasswordSession(email, password);
     } catch (error) {
-      console.log("Appwrite service :: Login Error : ", error);
+      //console.log("Appwrite service :: Login Error : ", error);
+      return error;
     }
   }
 
