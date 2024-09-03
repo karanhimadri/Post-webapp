@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import authService from "../AuthService/auth";
 import { logout } from "../store/AuthSlice";
 import { useState } from "react";
+import { BsSignpost2Fill } from "react-icons/bs";
 
 function Navbar() {
   const { status, userName } = useSelector((store) => store.authStore);
@@ -26,7 +27,9 @@ function Navbar() {
             className="d-inline-flex NavLink-body-emphasis text-decoration-none"
           >
             <h1>
-              <b style={{ color: "black" }}> Post App.</b>
+              <b style={{ color: "black" }}>
+                <BsSignpost2Fill /> Postly.
+              </b>
             </h1>
           </a>
         </div>
