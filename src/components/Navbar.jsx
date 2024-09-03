@@ -58,14 +58,14 @@ function Navbar() {
           </li>
           <li>
             <NavLink
-              to="/all-posts"
+              to="/manage-posts"
               className={({ isActive }) =>
                 isActive
                   ? "link-offset-2 link-underline link-underline-opacity-100"
                   : "link-offset-2 link-underline link-underline-opacity-0"
               }
             >
-              <b>Your Posts</b>
+              <b>Manage Posts</b>
             </NavLink>
           </li>
         </ul>

@@ -34,7 +34,7 @@ export class DBService {
   }
 
   // here need a id to find the post and update so i use slug. and no need to take userID ,its can't update
-  async updatePost(slug, { title, content, featuredImage, status }) {
+  async updatePost(slug, { title, content }) {
     try {
       return await this.databases.updateDocument(
         appwriteDBId,
@@ -43,25 +43,23 @@ export class DBService {
         {
           title,
           content,
-          featuredImage,
-          status,
         }
       );
     } catch (error) {
       console.log("Appwrite service :: updatePost error : ", error);
     }
   }
-  async deletePost(IdOfUser) {
+  async deletePost(postId) {
     try {
       await this.databases.deleteDocument(
         appwriteDBId,
         appwriteCollectionId,
-        IdOfUser
+        postId
       );
-      return true; // for confirmation
+      return "200"; // for confirmation
     } catch (error) {
       console.log("Appwrite service :: deletePost error : ", error);
-      return false;
+      return "401";
     }
   }
 

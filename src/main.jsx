@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CreatePost from "./components/CreatePost";
 import Login from "./components/LogIn";
-import ShowPost from "./components/ShowPost";
+import ManagePost from "./components/ManagePost";
 import SignUp from "./components/SignUp";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Homepage from "./components/Homepage"
@@ -18,7 +18,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="" element={<Homepage />}>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/all-posts" element={<ShowPost />} />
+            <Route path="/manage-posts" element={<ManagePost />} />
             <Route path="/create-post" element={<CreatePost />} />
           </Route>
         </Routes>
