@@ -36,7 +36,7 @@ const SignUp = () => {
       <form className="signup-form" onSubmit={handleSubmit}>
         <h2>Sign Up</h2>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username"><b>Enter Username</b></label>
           <input
             type="text"
             id="username"
@@ -45,10 +45,11 @@ const SignUp = () => {
             onChange={handleChange}
             required
             aria-label="Username"
+            placeholder="username"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email"><b>Enter Email ID</b></label>
           <input
             type="email"
             id="email"
@@ -57,10 +58,11 @@ const SignUp = () => {
             onChange={handleChange}
             required
             aria-label="Email"
+            placeholder="email id"
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password"><b>Create a Password</b></label>
           <input
             type="text"
             id="password"
@@ -69,6 +71,7 @@ const SignUp = () => {
             onChange={handleChange}
             required
             aria-label="Password"
+            placeholder="password"
           />
         </div>
         <button type="submit" className="signup-button" aria-label="Sign Up">

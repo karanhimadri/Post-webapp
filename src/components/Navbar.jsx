@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import authService from "../AuthService/auth";
-import { logout } from "../store/AuthSlice";
+import { login, logout } from "../store/AuthSlice";
 import { useState } from "react";
 import { BsSignpost2Fill } from "react-icons/bs";
 
 function Navbar() {
   const { status, userName } = useSelector((store) => store.authStore);
   const [loading, setLoading] = useState(false);
+  const [userLoading, setUserLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -17,6 +18,12 @@ function Navbar() {
     dispatch(logout());
     setLoading(false);
     navigate("/");
+  }
+  async function handleGuestUser() {
+    setUserLoading(true);
+    const res = await authService.createGuestUser();
+    dispatch(login({ userData: res.userId, userName: null }));
+    setUserLoading(false);
   }
   return (
     <div className="container">
@@ -78,7 +85,7 @@ function Navbar() {
             <>
               <div style={{ display: "flex", gap: "10px" }}>
                 <p>
-                  <b>Welcome, {userName}</b>
+                  <b>Welcome, {userName ? userName : "Guest User"}</b>
                 </p>
                 <button
                   type="button"
@@ -86,7 +93,17 @@ function Navbar() {
                   onClick={handleLogout}
                   disabled={loading}
                 >
-                  {loading ? "Loading..." : "Logout"}
+                  {loading ? (
+                    <>
+                      <span
+                        className="spinner-grow spinner-grow-sm"
+                        aria-hidden="true"
+                      ></span>
+                      <span role="status">Loading...</span>
+                    </>
+                  ) : (
+                    "Logout"
+                  )}
                 </button>
               </div>
             </>
@@ -97,12 +114,29 @@ function Navbar() {
               </Link>
               <Link to="/signup" className="btn btn-primary">
                 Sign-up
-              </Link>{" "}
+              </Link>
+              <button
+                onClick={handleGuestUser}
+                style={{ marginLeft: "7px" }}
+                type="button"
+                className="btn btn-dark"
+              >
+                {userLoading ? (
+                  <>
+                    <span
+                      className="spinner-grow spinner-grow-sm"
+                      aria-hidden="true"
+                    ></span>
+                    <span role="status">Loading...</span>
+                  </>
+                ) : (
+                  "As a Guest"
+                )}
+              </button>
             </div>
           )}
         </div>
       </header>
-      <div style={{ borderTop: "2px solid black" }}></div>
     </div>
   );
 }

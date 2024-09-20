@@ -3,7 +3,7 @@ const appwriteUrl = "https://cloud.appwrite.io/v1";
 const appwriteProjectId = "66d205a7001fc9acafeb";
 const appwriteDBId = "66d20773001145912a1c";
 const appwriteCollectionId = "66d3391800367ac08fae";
-const appwriteBucketId = "66d205a7001fc9acafeb"; //bucketID is not appropiate
+const appwriteBucketId = "66ed166c00040b58cd85"; 
 export class DBService {
   client = new Client();
   databases;
@@ -15,7 +15,7 @@ export class DBService {
     this.storage = new Storage(this.client);
   }
 
-  async createPost(title, content, IdOfUser) {
+  async createPost(title, content, IdOfUser, featureImage) {
     try {
       return await this.databases.createDocument(
         appwriteDBId,
@@ -25,6 +25,7 @@ export class DBService {
           title,
           content,
           IdOfUser,
+          featureImage
         }
       );
     } catch (error) {
@@ -32,9 +33,8 @@ export class DBService {
       return null;
     }
   }
-
   // here need a id to find the post and update so i use slug. and no need to take userID ,its can't update
-  async updatePost(slug, { title, content }) {
+  async updatePost(slug, { title, content, featureImage }) {
     try {
       return await this.databases.updateDocument(
         appwriteDBId,
@@ -43,6 +43,7 @@ export class DBService {
         {
           title,
           content,
+          featureImage
         }
       );
     } catch (error) {

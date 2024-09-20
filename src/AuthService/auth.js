@@ -11,6 +11,15 @@ class AuthService {
     this.account = new Account(this.client);
   }
 
+  async createGuestUser() {
+    try {
+    return await this.account.createAnonymousSession();
+    } catch (error) {
+      return `Guest User ERROR :: ${error}`;
+    }
+
+  }
+
   async createAccount(email, password, name) {
     // needing parameter to signup
     try {

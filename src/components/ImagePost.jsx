@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import "../App.css";
 import dbService from "../AuthService/DB";
@@ -6,11 +5,10 @@ import { useSelector } from "react-redux";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { RxCrossCircled } from "react-icons/rx";
 
-const CreatePost = () => {
+const ImagePost = () => {
   const { status, userData } = useSelector((store) => store.authStore);
+
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
   const [content, setContent] = useState("");
   const [message, setMessage] = useState({
     alert: "",
@@ -22,30 +20,21 @@ const CreatePost = () => {
     e.preventDefault();
     // Handle form submission logic
     try {
-      const storageRes = await dbService.uploadFile(image);
-      console.log(storageRes);
-      //console.log(storageRes.$id)
-      if (storageRes) {
-        const res = await dbService.createPost(
-          title,
-          content,
-          userData,
-          storageRes.$id
-        );
-        if (res) {
+      const res = await dbService.createPost(title, content, userData);
+
+      if (res) {
+        setMessage({
+          alert: "  Post created successfully !!",
+          theme: "alert-success",
+          icon: IoIosCheckmarkCircle,
+        });
+        setTimeout(() => {
           setMessage({
-            alert: "  Post created successfully !!",
-            theme: "alert-success",
-            icon: IoIosCheckmarkCircle,
+            alert: "",
+            theme: "",
+            icon: null,
           });
-          setTimeout(() => {
-            setMessage({
-              alert: "",
-              theme: "",
-              icon: null,
-            });
-          }, 10000);
-        }
+        }, 10000);
       }
     } catch (error) {
       setMessage({
@@ -65,6 +54,10 @@ const CreatePost = () => {
     setContent("");
   };
 
+  // Inside your component
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -83,9 +76,7 @@ const CreatePost = () => {
           <h1>Create a New Post</h1>
           <form onSubmit={handleSubmit} className="create-post-form">
             <div className="form-group">
-              <label htmlFor="title">
-                <b>Title</b>
-              </label>
+              <label htmlFor="title">Title</label>
               <input
                 type="text"
                 id="title"
@@ -95,10 +86,9 @@ const CreatePost = () => {
                 required
               />
             </div>
+
             <div className="form-group">
-              <label htmlFor="content">
-                <b>Content</b>
-              </label>
+              <label htmlFor="content">Content</label>
               <textarea
                 id="content"
                 value={content}
@@ -107,10 +97,9 @@ const CreatePost = () => {
                 required
               />
             </div>
+
             <div className="form-group">
-              <label htmlFor="image">
-                <b>Upload Image</b>
-              </label>
+              <label htmlFor="image">Upload Image</label>
               <input
                 type="file"
                 id="image"
@@ -118,17 +107,14 @@ const CreatePost = () => {
                 onChange={(e) => handleImageChange(e)}
               />
             </div>
+
             {imagePreview && (
               <div className="image-preview">
                 <img src={imagePreview} alt="Image Preview" />
               </div>
             )}
 
-            <button
-              style={{ marginTop: "10px" }}
-              type="submit"
-              className="submit-button"
-            >
+            <button type="submit" className="submit-button">
               Submit
             </button>
           </form>
@@ -150,4 +136,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default ImagePost;
